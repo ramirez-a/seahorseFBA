@@ -1,14 +1,22 @@
+#'@export summarize_seahorse
 #'@title Summarize seahorse data by sample and region
 #'@author Alfred Ramirez <akram@bu.edu>
 #'@description This function takes the long format table exported by the XF Wave software for the 
 #'oxidiative stress test and returns a matrix of means and standard deviations for each region
 #'of the assay (namely basal, oligomycin, fccp, and rotenone).  The GroupName column must have the sample names.
+#'The final measurement of each region is used for the mean and standard deviation across wells.
 #'@param x A data.frame
+#'@param n The number of regions
+# There's definitely a more elegant way of doing this.
 
-summarize_seahorse <- function(x){
+summarize_seahorse <- function(x, n){
   samples <- unique(x[,"GroupName"])
-  m <- max(x[,"Measurement"])/4 #The number measurements in each of the 4 regions
-  output_mat <- matrix(nrow=length(samples), ncol=17)
+  
+  # I use length(unique(foo)) rather than max(foo) since there may be a time when
+  # a whole region should be excluded from the analysis.
+  
+  m <- length(unique((x[,"Measurement"])))/n #The number measurements in each of the 4 regions
+  output_mat <- matrix(nrow=length(samples), ncol=(m*n+1))
   
   for(i in 1:length(samples)){
     mat <- x[x[,"GroupName"] == tissue[i],]

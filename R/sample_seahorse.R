@@ -1,7 +1,8 @@
+#'@export sample_seahorse
 #'@title Sample from the seahorse data
 #'@author Alfred Ramirez <akram@bu.edu>
 #'@description This function takes the data.frame returned by the function \code{\link{summarize_seahorse}} and returns
-#'A data.frame with sampled measurements
+#'A data.frame with sampled measurements for the specified sample
 #'@param x A data.frame
 
 sample_seahorse <- function(x){
