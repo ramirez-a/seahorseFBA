@@ -9,7 +9,7 @@
 #'@param n The number of regions
 # There's definitely a more elegant way of doing this.
 
-summarize_seahorse <- function(x, n){
+summarize_seahorse <- function(x, n=4){
   samples <- unique(x[,"GroupName"])
   
   # I use length(unique(foo)) rather than max(foo) since there may be a time when
@@ -19,8 +19,16 @@ summarize_seahorse <- function(x, n){
   output_mat <- matrix(nrow=length(samples), ncol=(m*n+1))
   
   for(i in 1:length(samples)){
-    mat <- x[x[,"GroupName"] == tissue[i],]
+    mat <- x[x[,"GroupName"] == samples[i],]
     output_mat[i,1] <- samples[i]
+    
+    
+    output_mat[i,m+j] <- mat[1:m, "OCR"]
+    output_mat[i,2*m+j] <- mat[1:m, "PPR"]
+    output_mat[i,3*m+j] <- mat[1:m, "OCR.Error"]
+    output_mat[i,4*m+j] <- mat[1:m, "PPR.Error"]
+    
+    
     output_mat[i,2] <- mean(mat[1:m,"OCR"]) #mean OCR basal
     output_mat[i,3] <- mean(mat[1:m + m,"OCR"]) #mean OCR oligo
     output_mat[i,4] <- mean(mat[1:m + 2*m,"OCR"]) #mean OCR FCCP

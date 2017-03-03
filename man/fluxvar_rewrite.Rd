@@ -2,19 +2,15 @@
 % Please edit documentation in R/fluxvar_rewrite.R
 \name{fluxvar_rewrite}
 \alias{fluxvar_rewrite}
-\title{Rewrite fluxVar result into a dataframe}
+\title{Rewrite fluxVar result into a matrix}
 \usage{
-fluxvar_rewrite(o)
+fluxvar_rewrite(x)
 }
 \arguments{
-\item{model}{A object of class \code{\link[sybil]{modelorg}}}
-
-\item{reactions}{A character vector of reaction ids}
-
-\item{solver}{The solver to use.  Default SYBIL_SETTINGS("SOLVER")}
+\item{x}{A object of class \code{\link[sybil]{optsol}} produced by fluxVar}
 }
 \description{
-This function rewrites an object of \code{\link[sybil]{optsol}}
+This function rewrites an object of \code{\link[sybil]{optsol}} into a matrix
 }
 \author{
 Alfred Ramirez <akram@bu.edu>

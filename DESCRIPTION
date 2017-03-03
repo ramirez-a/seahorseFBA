@@ -1,10 +1,11 @@
 Package: sybilXF
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Integration of seahorse XF flux measurements into a metabolic model to generate flux predictions
+Version: 0.1
 Date: 2017-02-28
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Alfred Ramirez 
+Maintainer: Alfred Ramirez <akram@bu.edu>
+Description: This package integrates the OCR and PPR measurements produced by the oxidative stress test and performs metabolic
+modeling to generate flux predictions.
+License: GPL-3
 RoxygenNote: 5.0.1
