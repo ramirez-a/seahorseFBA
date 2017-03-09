@@ -7,51 +7,45 @@
 #'The final measurement of each region is used for the mean and standard deviation across wells.
 #'@param x A data.frame
 #'@param n The number of regions
-# There's definitely a more elegant way of doing this.
 
 summarize_seahorse <- function(x, n=4){
+  expected_colnames <- c("Mesurement", "GroupName", "Time", "OCR", "OCR.Error", "ECAR", "ECAR.Error", "PPR", "PPR.Error")
+  if(all(colnames(x) %in% expected_colnames)){
+    stop("Unrecognized column names.  Colnames must be as follows:",expected_colnames)
+  }
   samples <- unique(x[,"GroupName"])
   
   # I use length(unique(foo)) rather than max(foo) since there may be a time when
-  # a whole region should be excluded from the analysis.
+  # a whole region should be excluded from the analysis creating a discrepancy b/w the two
+  m <- length(unique((x[,"Measurement"])))/n #The number measurements in each of the n regions
+  output_mat <- matrix(0,nrow=length(samples), ncol=(4*n))
+  rownames(output_mat) <- samples
   
-  m <- length(unique((x[,"Measurement"])))/n #The number measurements in each of the 4 regions
-  output_mat <- matrix(nrow=length(samples), ncol=(m*n+1))
-  
+  #Kudos to those that can wrap their heads around this.
   for(i in 1:length(samples)){
     mat <- x[x[,"GroupName"] == samples[i],]
-    output_mat[i,1] <- samples[i]
-    
-    
-    output_mat[i,m+j] <- mat[1:m, "OCR"]
-    output_mat[i,2*m+j] <- mat[1:m, "PPR"]
-    output_mat[i,3*m+j] <- mat[1:m, "OCR.Error"]
-    output_mat[i,4*m+j] <- mat[1:m, "PPR.Error"]
-    
-    
-    output_mat[i,2] <- mean(mat[1:m,"OCR"]) #mean OCR basal
-    output_mat[i,3] <- mean(mat[1:m + m,"OCR"]) #mean OCR oligo
-    output_mat[i,4] <- mean(mat[1:m + 2*m,"OCR"]) #mean OCR FCCP
-    output_mat[i,5] <- mean(mat[1:m + 3*m,"OCR"]) #mean OCR rotenone
-    
-    output_mat[i,6] <- mean(mat[1:m,"PPR"]) #mean PPR basal
-    output_mat[i,7] <- mean(mat[1:m + m,"PPR"]) #mean PPR oligo
-    output_mat[i,8] <- mean(mat[1:m + 2*m,"PPR"]) #mean PPR FCCP
-    output_mat[i,9] <- mean(mat[1:m + 3*m,"PPR"]) #mean PPR rotenone
-    
-    output_mat[i,10] <- sd(mat[1:m,"OCR"]) #sd OCR basal
-    output_mat[i,11] <- sd(mat[1:m + m,"OCR"]) #sd OCR oligo
-    output_mat[i,12] <- sd(mat[1:m + 2*m,"OCR"]) #sd OCR FCCP
-    output_mat[i,13] <- sd(mat[1:m + 3*m,"OCR"]) #sd OCR rotenone
-    
-    output_mat[i,14] <- sd(mat[1:m,"PPR"]) #sd PPR basal
-    output_mat[i,15] <- sd(mat[1:m + m,"PPR"]) #sd PPR oligo
-    output_mat[i,16] <- sd(mat[1:m + 2*m,"PPR"]) #sd PPR FCCP
-    output_mat[i,17] <- sd(mat[1:m + 3*m,"PPR"]) #sd PPR rotenone
+    for(j in 1:n){      
+      mini_mat <- tail(mat[((j-1)*m+1):(j*m),],1)
+      output_mat[i,(1:4)+4*(j-1)] <- as.matrix(mini_mat[,c("OCR", "OCR.Error", "PPR", "PPR.Error")])
+    }
   }
-  colnames(output_mat) <- c("Sample", "OCR_basal","OCR_oligo", "OCR_fccp", "OCR_rotenone",
-                            "PPR_basal", "PPR_oligo", "PPR_fccp", "PPR_rotenone",
-                            "OCR_basal_sd","OCR_oligo_sd", "OCR_fccp_sd", "OCR_rotenone_sd", 
-                            "PPR_basal_sd", "PPR_oligo_sd", "PPR_fccp_sd", "PPR_rotenone_sd")
+    
+  if(ncol(output_mat) == 16){  
+    #Most people probably use oligo, fccp, rotenone
+    colnames(output_mat) <- c("OCR_basal","OCR_sd_basal", "PPR_basal", "PPR_sd_basal",
+                              "OCR_oligo", "OCR_sd_oligo", "PPR_oligo", "PPR_sd_oligo",
+                              "OCR_fccp","OCR_sd_fccp", "PPR_fccp", "PPR_sd_fccp", 
+                              "OCR_rotenone", "OCR_sd_rotenone", "PPR_rotenone", "PPR_sd_rotenone")
+  } else if(ncol(output_mat) == 20){
+    #We used pyruvate, oligo, fccp, rotenone
+    colnames(output_mat) <- c("OCR_basal","OCR_sd_basal", "PPR_basal", "PPR_sd_basal",
+                              "OCR_pyr", "OCR_sd_pyr","PPR_pyr","PPR_sd",
+                              "OCR_oligo", "OCR_sd_oligo", "PPR_oligo", "PPR_sd_oligo",
+                              "OCR_fccp","OCR_sd_fccp", "PPR_fccp", "PPR_sd_fccp", 
+                              "OCR_rotenone", "OCR_sd_rotenone", "PPR_rotenone", "PPR_sd_rotenone")
+  } else {
+    #For everyone else
+    colnames(output_mat) <- paste0(rep(c("OCR_region", "OCR_sd_region", "PPR_region", "PPR_sd_region"),times=n),rep(1:n,each=4))
+  }
   output_mat
 }
