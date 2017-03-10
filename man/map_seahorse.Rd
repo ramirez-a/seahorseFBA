@@ -11,7 +11,7 @@ map_seahorse(x)
 }
 \description{
 This function takes the matrix of sampled seahorse measurements returned by \code{\link{sample_seahorse}}
-and maps the fluxes to metabolic reactions.  It returns a matrix with the mapped fluxes of
+and maps the fluxes to metabolic reactions. It returns a matrix with the mapped fluxes of
 basal oxygen consumption, mitochondrial oxygen consumption, mitochondrial ATP production,
 mitochondrial ATP leak, and basal extracellular acidification
 }

@@ -4,17 +4,20 @@
 \alias{fluxPredict}
 \title{Make predictions from seahorse data by sampling and minimizing total flux}
 \usage{
-fluxPredict(model, seahorse_data, nsamples = 150)
+fluxPredict(model, seahorse_data, biomass_est = 0, cores = 1)
 }
 \arguments{
 \item{model}{An object of class \code{\link[sybil]{modelorg}}}
 
-\item{seahorse_data}{A data.frame}
+\item{seahorse_data}{A data.frame returned by \code{\link{map_seahorse}}}
 
-\item{nsamples}{The number of samples to perform}
+\item{biomass_est}{Estimated biomass flux.  Not required, by may be useful.}
+
+\item{cores}{The number of cores to use for parallel computing.  If cores is greater than 1, a parallel backend
+must be registered.}
 }
 \description{
-This function integrates the seahorse measurements as constraints into the specified model,
+This function integrates the sampled seahorse measurements as constraints into the specified model,
 minimizes total flux for each sample, and returns a matrix of reactions x samples where the entries are predicted fluxes.
 }
 \author{

@@ -25,8 +25,5 @@ sample_seahorse <- function(x, nsamples=150, sample=NULL){
   output_mat["PPR_fccp",] <- rnorm(nsamples,mean=x[i,"PPR_fccp"],sd=x[i,"PPR_sd_fccp"])
   output_mat["PPR_rotenone",] <- rnorm(nsamples,mean=x[i,"PPR_rotenone"],sd=x[i,"PPR_sd_rotenone"])
   
-#   output_mat[i,"ATP_flux"] <- 4.6*(output_mat[i,"OCR_basal"] - output_mat[i,"OCR_oligo"])
-#   output_mat[i,"ATP_leak"] <- 4.6*(output_mat[i,"OCR_oligo"] - output_mat[i,"OCR_rotenone"])
-
   output_mat
 }
