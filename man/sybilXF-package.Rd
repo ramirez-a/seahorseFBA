@@ -13,7 +13,7 @@
 The DESCRIPTION file:
 \packageDESCRIPTION{sybilXF}
 \packageIndices{sybilXF}
-~~ An overview of how to use the package, including the most important functions ~~
+
 }
 \author{
 \packageAuthor{sybilXF}
@@ -21,15 +21,20 @@ The DESCRIPTION file:
 Maintainer: \packageMaintainer{sybilXF}
 }
 \references{
-~~ Literature or other references for background information ~~
+
 }
-\keyword{ 
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation directory ~~
-package }
+\keyword{ }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
 }
 \examples{
-~~ simple examples of the most important functions ~~
+
+#Not run
+#data(seahorse_data)
+#data(Recon_21A_reduced)
+#data_summary <- summarize_seahorse(seahorse_data)
+#ba_samples <- sample_seahorse(data_summary, nsamples=2, sample="BA")
+#ba_samples <- convert_units(ba_samples, mwr=0.026)
+#ba_constraints <- map_seahorse(ba_samples)
+#ba_predicted_fluxes <- fluxPredict(model = Recon_21A_reduced, seahorse_data= ba_constraints)
+
 }

@@ -6,7 +6,8 @@
 #'@param mwr Macromolecular weight ratio
 #'@details The macromolecular weight ratio is the relationship between the initial normalization 
 #'(typically DNA or protein) and total dry weight. It can vary substantially depending on cell type. By default,
-#'mwr = 0.706, which is the estimated protein/dry_weight ratio from the biomass reaction in Recon 2.
+#'mwr = 0.706, which is the estimated protein/dry_weight ratio from the biomass reaction in Recon 2. For adipocytes,
+#'mwr = 0.026
 
 convert_units <- function(x, mwr = 0.706){
   #Units are initially pmol/min/ug_macromolecule

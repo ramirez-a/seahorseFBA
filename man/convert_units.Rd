@@ -4,7 +4,7 @@
 \alias{convert_units}
 \title{Convert pmol/min/ug_protein or pmol/min/ug_DNA to mmol/gDw/hr, the units of the metabolic model}
 \usage{
-convert_units(x, mcr = 0.706)
+convert_units(x, mwr = 0.706)
 }
 \arguments{
 \item{x}{A matrix}
@@ -17,7 +17,8 @@ This function takes the matrix returned by \code{\link{sample_seahorse}} and mul
 \details{
 The macromolecular weight ratio is the relationship between the initial normalization 
 (typically DNA or protein) and total dry weight. It can vary substantially depending on cell type. By default,
-mwr = 0.706, which is the estimated protein/dry_weight ratio from the biomass reaction in Recon 2.
+mwr = 0.706, which is the estimated protein/dry_weight ratio from the biomass reaction in Recon 2. For adipocytes,
+mwr = 0.026
 }
 \author{
 Alfred Ramirez <akram@bu.edu>

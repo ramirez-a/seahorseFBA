@@ -8,6 +8,10 @@ sample_seahorse(x, nsamples = 150, sample = NULL)
 }
 \arguments{
 \item{x}{A data.frame}
+
+\item{nsamples}{The number of samples to generate}
+
+\item{sample}{The sample name}
 }
 \description{
 This function takes the data.frame returned by the function \code{\link{summarize_seahorse}} and returns

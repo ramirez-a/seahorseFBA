@@ -7,7 +7,7 @@
 map_seahorse(x)
 }
 \arguments{
-\item{model}{An object of class \code{\link[sybil]{modelorg}}}
+\item{x}{A matrix}
 }
 \description{
 This function takes the matrix of sampled seahorse measurements returned by \code{\link{sample_seahorse}}

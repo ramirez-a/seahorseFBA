@@ -5,7 +5,7 @@
 #'and maps the fluxes to metabolic reactions. It returns a matrix with the mapped fluxes of
 #'basal oxygen consumption, mitochondrial oxygen consumption, mitochondrial ATP production,
 #'mitochondrial ATP leak, and basal extracellular acidification
-#'@param model An object of class \code{\link[sybil]{modelorg}}
+#'@param x A matrix
 
 map_seahorse <- function(x){
   # These reaction names are specific to Recon 2.1x.  Probably won't work for Recon 2.2.

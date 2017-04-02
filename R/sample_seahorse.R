@@ -4,6 +4,8 @@
 #'@description This function takes the data.frame returned by the function \code{\link{summarize_seahorse}} and returns
 #'A data.frame with sampled measurements for the specified sample
 #'@param x A data.frame
+#'@param nsamples The number of samples to generate
+#'@param sample The sample name 
 
 sample_seahorse <- function(x, nsamples=150, sample=NULL){
   if(is.null(sample)){
