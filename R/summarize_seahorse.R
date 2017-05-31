@@ -9,8 +9,8 @@
 #'@param n The number of regions
 
 summarize_seahorse <- function(x, n=4){
-  expected_colnames <- c("Mesurement", "GroupName", "Time", "OCR", "OCR.Error", "ECAR", "ECAR.Error", "PPR", "PPR.Error")
-  if(all(colnames(x) %in% expected_colnames)){
+  expected_colnames <- c("Measurement", "GroupName", "Time", "OCR", "OCR.Error", "ECAR", "ECAR.Error", "PPR", "PPR.Error")
+  if(!all(colnames(x) %in% expected_colnames)){
     stop("Unrecognized column names.  Colnames must be as follows:",expected_colnames)
   }
   samples <- unique(x[,"GroupName"])

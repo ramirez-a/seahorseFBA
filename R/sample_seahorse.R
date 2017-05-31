@@ -5,10 +5,10 @@
 #'A data.frame with sampled measurements for the specified sample
 #'@param x A data.frame
 #'@param nsamples The number of samples to generate
-#'@param sample The sample name 
+#'@param sample.nm The sample name 
 
-sample_seahorse <- function(x, nsamples=150, sample=NULL){
-  if(is.null(sample)){
+sample_seahorse <- function(x, nsamples=150, sample.nm=NULL){
+  if(is.null(sample.nm)|!(sample.nm %in% rownames(x))){
     stop("Please specify sample. The sample must exist in the rownames of x")
   }
   
@@ -16,7 +16,7 @@ sample_seahorse <- function(x, nsamples=150, sample=NULL){
   colnames(output_mat) <- paste0("sample", 1:nsamples)
   rownames(output_mat) <- c("OCR_basal", "OCR_oligo", "OCR_fccp", "OCR_rotenone", "PPR_basal", "PPR_oligo", "PPR_fccp", "PPR_rotenone")
   
-  i <- sample
+  i <- sample.nm
   output_mat["OCR_basal",] <- rnorm(nsamples,mean=x[i,"OCR_basal"],sd=x[i,"OCR_sd_basal"])
   output_mat["OCR_oligo",] <- rnorm(nsamples,mean=x[i,"OCR_oligo"],sd=x[i,"OCR_sd_oligo"])
   output_mat["OCR_fccp",] <- rnorm(nsamples,mean=x[i,"OCR_fccp"],sd=x[i,"OCR_sd_fccp"])
