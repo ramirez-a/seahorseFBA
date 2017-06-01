@@ -17,23 +17,38 @@ map_seahorse <- function(x){
   colnames(output_mat) <- colnames(x)
   rownames(output_mat) <- c(exp_ub, exp_lb)
   
-  output_mat[c("EX_o2(e)in_ub","EX_o2(e)in_lb"),] <- x["OCR_basal",]
-  output_mat[c("EX_o2(e)ex_ub","EX_o2(e)ex_lb"),] <- 0
-  output_mat[c("ATPS4m_ub","ATPS4m_lb"),] <- 4.6*(x["OCR_basal",] - x["OCR_oligo",])
-  output_mat[c("DM_atp_m__ub","DM_atp_m__lb"),] <- 4.6*(x["OCR_oligo",] - x["OCR_rotenone",])
+  #set some fluxes to a value by setting both their upper and lower bounds to that value
+  output_mat["EX_o2(e)in_lb",] <- x["OCR_basal",]
+  output_mat["EX_o2(e)in_ub",] <- x["OCR_basal",]
+  output_mat["EX_o2(e)ex_lb",] <- 0
+  output_mat["EX_o2(e)ex_lb",] <- 0
+  output_mat["ATPS4m_lb",] <- 4.6*(x["OCR_basal",] - x["OCR_oligo",])
+  output_mat["ATPS4m_ub",] <- 4.6*(x["OCR_basal",] - x["OCR_oligo",])
+  output_mat["DM_atp_m__lb",] <- 4.6*(x["OCR_oligo",] - x["OCR_rotenone",])
+  output_mat["DM_atp_m__ub",] <- 4.6*(x["OCR_oligo",] - x["OCR_rotenone",])
   output_mat["O2tm_lb",] <- x["OCR_basal",] - x["OCR_rotenone",]
   output_mat["O2tm_ub",] <- x["OCR_fccp",] - x["OCR_rotenone",]
+  if (any(output_mat["O2tm_ub",] < output_mat["O2tm_lb",])){
+    warning("Some OCR_fccp sampled fluxes were less than OCR_basal sampled fluxes. To avoid infeasibility, 
+            these were set to the OCR_basal values.")
+    wh.cols <- which(output_mat["O2tm_ub",] < output_mat["O2tm_lb",])
+    output_mat["O2tm_ub", wh.cols] <- output_mat["O2tm_lb", wh.cols]
+  }
   
   #Lactate and extracellular acid may be negative and the associated reactions have different 
-  #stoichiometries due to the total carbon constraint, thus a if statement is needed to check to determine which one to set.
+  #stoichiometries due to the total carbon constraint, thus an if statement is needed to check to determine which one to set.
   #Ideally, there should never be a case where the PPR negative (except a few edges cases in biology).
   for(i in 1:ncol(x)){
     if(x["PPR_basal",i] < 0){
-      output_mat[c("EX_lac_L(e)in_lb","EX_lac_L(e)in_ub"),] <- abs(x["PPR_basal",i])
-      output_mat[c("EX_lac_L(e)ex_lb","EX_lac_L(e)ex_ub"),] <- 0
-    } else{
-      output_mat[c("EX_lac_L(e)in_lb","EX_lac_L(e)in_ub"),] <- 0
-      output_mat[c("EX_lac_L(e)ex_lb","EX_lac_L(e)ex_ub"),] <- x["PPR_basal",i]
+      output_mat["EX_lac_L(e)in_lb",i] <- abs(x["PPR_basal",i])
+      output_mat["EX_lac_L(e)in_ub",i] <- abs(x["PPR_basal",i])
+      output_mat["EX_lac_L(e)ex_lb",i] <- 0
+      output_mat["EX_lac_L(e)ex_ub",i] <- 0
+    } else {
+      output_mat["EX_lac_L(e)in_lb",i] <- 0
+      output_mat["EX_lac_L(e)in_ub",i] <- 0
+      output_mat["EX_lac_L(e)ex_lb",i] <- x["PPR_basal",i]
+      output_mat["EX_lac_L(e)ex_ub",i] <- x["PPR_basal",i]
     }
   }
 
